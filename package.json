@@ -71,10 +71,14 @@
                 "command": "clipboard-manager.history.clear",
                 "title": "Clear History",
                 "category": "Clipboard Manager",
-                "icon": {
-                    "dark": "resources/dark/clear-history.svg",
-                    "light": "resources/light/clear-history.svg"
-                }
+                "icon": "$(extensions-clear-search-results)"
+
+            },
+            {
+                "command": "clipboard-manager.history.show",
+                "title": "Show History",
+                "category": "Clipboard Manager",
+                "icon": "$(find-selection)"
             },
             {
                 "command": "clipboard-manager.history.remove",
@@ -126,6 +130,11 @@
                     "command": "clipboard-manager.history.clear",
                     "when": "view == clipboardHistory",
                     "group": "navigation"
+                },
+                {
+                    "command": "clipboard-manager.history.show",
+                    "when": "view == clipboardHistory",
+                    "group": "navigation"
                 }
             ]
         },
@@ -164,7 +173,7 @@
                     },
                     "clipboard-manager.maxClips": {
                         "type": "integer",
-                        "default": 100,
+                        "default": 99,
                         "description": "Maximum number of clips to save in clipboard"
                     },
                     "clipboard-manager.moveToTop": {

@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { ClipboardManager } from "../manager";
 import { IClipboardTextChange } from "../monitor";
 import { commandList } from "./common";
+// @ts-ignore
 
 /**
  * Command to paste from double click on history item
@@ -20,6 +21,14 @@ export class HistoryTreeDoubleClickCommand implements vscode.Disposable {
         this
       )
     );
+    this._disposable.push(
+      vscode.commands.registerCommand(
+        commandList.historyTreePaste,
+        this.paste,
+        this
+      )
+    );
+
   }
 
   /**
@@ -44,6 +53,21 @@ export class HistoryTreeDoubleClickCommand implements vscode.Disposable {
     // Reset double click
     this.prevClip = undefined;
 
+    // Update current clip in clipboard
+    await this._manager.setClipboardValue(clip.value);
+
+    // Force to focus on editor to paste command works
+    await vscode.commands.executeCommand(
+      "workbench.action.focusActiveEditorGroup"
+    );
+
+    // Run default paste
+    return await vscode.commands.executeCommand(
+      "editor.action.clipboardPasteAction"
+    );
+  }
+
+  protected async paste(clip: IClipboardTextChange) {
     // Update current clip in clipboard
     await this._manager.setClipboardValue(clip.value);
 

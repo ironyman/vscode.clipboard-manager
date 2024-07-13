@@ -13,6 +13,14 @@ export class ClearClipboardHistory implements vscode.Disposable {
         this
       )
     );
+
+    this._disposable.push(
+      vscode.commands.registerCommand(
+        commandList.showClipboardHistory,
+        this.showClipboardHistory,
+        this
+      )
+    );
   }
 
   protected async execute() {
@@ -28,6 +36,23 @@ export class ClearClipboardHistory implements vscode.Disposable {
     if (response === yes) {
       this._manager.clearAll();
     }
+  }
+
+  protected async showClipboardHistory() {
+    let content = '';
+    for (const item of this._manager.clips) {
+			let itemText = `
+${item.createdLocation?.uri.path || 'Untitled'}:${item.createdLocation?.range.start.line || '0'}:
+${item.value}
+`;
+			content += itemText;
+		}
+
+		vscode.workspace.openTextDocument({
+			content: content,
+		}).then(newDocument => {
+			vscode.window.showTextDocument(newDocument);
+		});
   }
 
   public dispose() {

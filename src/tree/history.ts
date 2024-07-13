@@ -13,7 +13,7 @@ export class ClipHistoryItem extends vscode.TreeItem {
     this.tooltip = this.clip.value;
 
     this.command = {
-      command: commandList.historyTreeDoubleClick,
+      command: commandList.historyTreePaste,
       title: "Paste",
       tooltip: "Paste",
       arguments: [this.clip],
@@ -68,7 +68,7 @@ export class ClipboardTreeDataProvider
       const item = new ClipHistoryItem(c);
       const indexNumber = leftPad(index + 1, maxLength, "0");
 
-      item.label = `${indexNumber}) ${item.label}`;
+      item.label = `${indexNumber}| ${item.label}`;
 
       return item;
     });
